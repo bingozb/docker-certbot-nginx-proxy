@@ -36,3 +36,8 @@ services:
     volumes:
       - ${NGINX_CERTS_PATH}:/etc/nginx/certs:rw
       - ${DOCKER_SOCK}:/var/run/docker.sock:ro
+
+networks:
+  default:
+    external:
+      name: ${NGINX_PROXY_NETWORK}
