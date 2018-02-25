@@ -6,7 +6,13 @@ A lightweight companion container for the nginx-proxy. It allows the creation/re
 
 First, you must declare a writable volumes to create/renew CertBot certificates. The default path is `/usr/local/nginx/certs`. See and modify the `.env` file if you want to make some changes.
 
-And then, run containers via docker-compose:
+Then, create the network `nginx-proxy` if you want to use  multiple sets of services.
+
+```sh
+$ docker create network nginx-proxy
+```
+
+After that, run containers via docker-compose:
 
 ```sh
 $ docker-compose up -d
@@ -30,7 +36,7 @@ Finally, start any containers you want proxied with a env var `VIRTUAL_HOST=subd
 Example:
 
 ```sh
-$ docker run -d \
+$ docker run -d --net=nginx-proxy \
 --name example-app \
 -e "VIRTUAL_HOST=example.com,www.example.com" \
 nginx:alpine
@@ -45,7 +51,7 @@ If your container exposes multiple ports, nginx-proxy will default to the servic
 Example:
 
 ```sh
-$ docker run -d \
+$ docker run -d --net=nginx-proxy \
 --name example-app \
 -e "VIRTUAL_HOST=example.com,www.example.com" \
 -e "VIRTUAL_PORT=8080" \
@@ -59,7 +65,7 @@ All you need is to add the environment `LETSENCRYPT_HOST` and `LETSENCRYPT_EMAIL
 Example:
 
 ```sh
-$ docker run -d \
+$ docker run -d --net=nginx-proxy \
 --name example-app \
 -e "VIRTUAL_PORT=8080" \
 -e "VIRTUAL_HOST=example.com,www.example.com" \
